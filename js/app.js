@@ -28,6 +28,15 @@ class TicTacToeUI {
         this.nextButton.hidden = false;
         this.previousButton.hidden = false;
     }
+
+    updateUIToEnableOrDisableReviewButtons(currentPosition, totalLength) {
+        if(currentPosition === 0) this.previousButton.disabled = true;
+        else if(currentPosition === totalLength - 1) this.nextButton.disabled = true;
+        else {
+            this.nextButton.disabled = false;
+            this.previousButton.disabled = false;
+        }
+    }
     
     updateUIToDisplayWinner(player) {
         this.winner.innerHTML = `Player ${player} won!`;
@@ -109,6 +118,7 @@ class TicTacToe {
                 this.ui.updateUIToDisplayReviewButtons();
                 this.history.push(this.board.slice());
                 this.currentIndex = this.history.length-1;
+                this.ui.updateUIToEnableOrDisableReviewButtons(this.currentIndex, this.history.length);
                 this.ui.updateUIToDisplayWinner(this.currentPlayer);
             } else {
                 this.togglePlayer();
@@ -133,7 +143,7 @@ class TicTacToe {
         this.playerIcon = "X";
         this.gameOver = false;
         this.history = [];
-        this.currentIndex = history.length;
+        this.currentIndex = 0;
         this.ui.updateUIToResetBoard();
         this.ui.updateCurrentPlayerInUI(this.currentPlayer);
     }
@@ -143,6 +153,7 @@ class TicTacToe {
             this.currentIndex = this.currentIndex - 1;
             this.board = this.history[this.currentIndex];
             this.ui.updateUIToDisplaySelectedGrid(this.board);
+            this.ui.updateUIToEnableOrDisableReviewButtons(this.currentIndex, this.history.length);
         }
     }
 
@@ -151,6 +162,9 @@ class TicTacToe {
             this.currentIndex = this.currentIndex + 1;
             this.board = this.history[this.currentIndex];
             this.ui.updateUIToDisplaySelectedGrid(this.board);
+            this.ui.updateUIToEnableOrDisableReviewButtons(this.currentIndex, this.history.length);
         }
     }
 }
+
+const game = new TicTacToe();   

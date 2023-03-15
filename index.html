@@ -1,51 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="css/style.css">
+      <title>Tic-tac-toe</title>
+  </head>
+  <body>
+    <h1>Tic-tac-toe</h1>
 
-    <title>Tic-tac-toe</title>
-</head>
-<body>
-  <h1>Tic-tac-toe</h1>
+    <h4>Player 1: X</h4>
+    <h4>Player 2: O</h4>
 
-  <h4>Player 1: X</h4>
-  <h4>Player 2: O</h4>
-
-  <div class="grid">
-    <p id="current-player">Current Player: 1</p>
-    <p id="winner" hidden>Winner: </p>
-    <table id="game-board">
-      <tr>
-        <td id="0"></td>
-        <td id="1"></td>
-        <td id="2"></td>
-      </tr>
-      <tr>
-        <td id="3"></td>
-        <td id="4"></td>
-        <td id="5"></td>
-      </tr>
-      <tr>
-        <td id="6"></td>
-        <td id="7"></td>
-        <td id="8"></td>
-      </tr>
-    </table>
-  </div>
-  <div class="reset">
-    <button type="button" class="reset-button">Reset Game!</button>
-  </div>
-  <div class="review">
-    <button type="button" class="review-button" id="next-button" hidden>Next Move</button>
-    <button type="button" class="review-button" id="previous-button" hidden>Previous Move</button>
-  </div>
-  <script type="text/javascript" src="js/app.js"></script>
-  <script>
-      const game = new TicTacToe();  
-  </script>
-  
-</body>
+    <div class="grid">
+      <p id="current-player">Current Player: 1</p>
+      <p id="winner" hidden>Winner: </p>
+      <table id="game-board">
+        <tr>
+          <td id="0"></td>
+          <td id="1"></td>
+          <td id="2"></td>
+        </tr>
+        <tr>
+          <td id="3"></td>
+          <td id="4"></td>
+          <td id="5"></td>
+        </tr>
+        <tr>
+          <td id="6"></td>
+          <td id="7"></td>
+          <td id="8"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="reset">
+      <button type="button" class="reset-button">Reset Game!</button>
+    </div>
+    <div class="review">
+      <button type="button" class="review-button" id="previous-button" hidden>Previous Move</button>
+      <button type="button" class="review-button" id="next-button" hidden>Next Move</button>
+    </div>
+    <script type="text/javascript" src="js/app.js"></script>
+  </body>
 </html>
