@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="js/app.js"></script>
+
     <title>Tic-tac-toe</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <h4>Player 1: X</h4>
     <h4>Player 2: O</h4>
 
-    <div>
+    <div class="grid">
         <p id="current-player">Current Player: 1</p>
         <table id="game-board">
             <tr>
@@ -35,17 +35,38 @@
         </table>
     </div>
     <div class="reset">
-        <button type="button" onclick="resetBoard()">Reset Game!</button>
+        <button type="button" class="reset-button">Reset Game!</button>
     </div>
+    <div class="review">
+        <button type="button" class="review-button" id="next-button" hidden>Next Move</button>
+        <button type="button" class="review-button" id="previous-button" hidden>Previous Move</button>
+    </div>
+    <script type="text/javascript" src="js/app.js"></script>
     <script>
       const game = new TicTacToe();
       const cells = document.getElementsByTagName("td");
-
+      const resetButton = document.querySelector(".reset-button");
+      const nextButton = document.getElementById("next-button");
+      const previousButton = document.getElementById("previous-button");
+      
       for(let i = 0; i < cells.length; i++) {
-          cells[i].addEventListener("click", function() {
+          cells[i].addEventListener("click", () => {
               game.playTurn(i);
           });
       }
+
+      resetButton.addEventListener("click", () => {
+        game.resetBoard();
+      });
+      
+      nextButton.addEventListener("click", () => {
+        game.nextState();
+      });
+
+      previousButton.addEventListener("click", () => {
+        game.previousState();
+      });
   </script>
+  
 </body>
 </html>
