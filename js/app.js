@@ -1,6 +1,85 @@
+const BOARD_SIZE = 9;
+
+class TicTacToeUI {
+    constructor(game) {
+        this.game = game;
+        this.tiles = document.getElementsByTagName("td");
+        this.winner = document.getElementById("winner");
+        this.nextButton = document.getElementById("next-button");
+        this.previousButton = document.getElementById("previous-button");
+        this.resetButton = document.querySelector(".reset-button");
+        this.currentPlayer = document.getElementById("current-player");
+        this.addEventListeners();
+    }
+    
+    updateUIForSelectedCell(cellId, playerIcon) {
+        let cell = document.getElementById(cellId);
+        cell.innerHTML = playerIcon;
+        cell.classList.add("selected");
+    }
+    
+    updateUIForWinningCombination(winningCombination) {
+        winningCombination.forEach(element => {
+            document.getElementById(element).classList.add("won");
+        });
+    }
+    
+    updateUIToDisplayReviewButtons() {
+        this.nextButton.hidden = false;
+        this.previousButton.hidden = false;
+    }
+    
+    updateUIToDisplayWinner(player) {
+        this.winner.innerHTML = `Player ${player} won!`;
+        this.winner.hidden = false;
+    }
+    
+    updateCurrentPlayerInUI(player) {
+        this.currentPlayer.innerHTML=`Current Player: ${player}`;
+    }
+    
+    updateUIToResetBoard() {
+        for(let tile of this.tiles) {
+            tile.innerHTML="";
+            tile.classList.remove("selected");
+            tile.classList.remove("won");
+        }
+        this.winner.hidden = true;
+        this.nextButton.hidden = true;
+        this.previousButton.hidden = true;
+    }
+    
+    updateUIToDisplaySelectedGrid(board) {
+        for(let i = 0; i<this.tiles.length; i++) {
+            this.tiles[i].innerHTML = board[i];
+        }
+    }
+
+    addEventListeners() {
+        for(let i = 0; i < this.tiles.length; i++) {
+            this.tiles[i].addEventListener("click", () => {
+                this.game.playTurn(i);
+            });
+        }
+  
+        this.resetButton.addEventListener("click", () => {
+          this.game.resetBoard();
+        });
+        
+        this.nextButton.addEventListener("click", () => {
+          this.game.nextState();
+        });
+  
+        this.previousButton.addEventListener("click", () => {
+          this.game.previousState();
+        });
+    }
+
+}
+
 class TicTacToe {
     constructor() {
-        this.board = ["", "", "", "", "", "", "", "", ""];
+        this.board = Array(BOARD_SIZE).fill("");
         this.winningCombinations = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8], // horizontal
             [0, 3, 6], [1, 4, 7], [2, 5, 8], // vertical
@@ -10,9 +89,9 @@ class TicTacToe {
         this.currentPlayer = "1";
         this.playerIcon = "X";
         this.gameOver = false;
-        this.cells = document.getElementsByTagName("td");
         this.history = [];
         this.currentIndex = 0;
+        this.ui = new TicTacToeUI(this);
     }
 
     togglePlayer() {
@@ -24,19 +103,16 @@ class TicTacToe {
         if(this.board[cellId] === "" && !this.gameOver) {
             this.history.push(this.board.slice());
             this.board[cellId] = this.playerIcon;
-            let cell = document.getElementById(cellId);
-            cell.innerHTML = this.playerIcon;
-            cell.classList.add("selected");
+            this.ui.updateUIForSelectedCell(cellId, this.playerIcon);
             if(this.checkIfGameHasEnded()) {
-                this.winningCombination.forEach(element => {
-                    document.getElementById(element).classList.add("won");
-                });
-                this.displayReviewButtonsInUI();
+                this.ui.updateUIForWinningCombination(this.winningCombination);
+                this.ui.updateUIToDisplayReviewButtons();
                 this.history.push(this.board.slice());
                 this.currentIndex = this.history.length-1;
+                this.ui.updateUIToDisplayWinner(this.currentPlayer);
             } else {
                 this.togglePlayer();
-                this.updateCurrentPlayerInUI();
+                this.ui.updateCurrentPlayerInUI(this.currentPlayer);
             }
         } 
     }
@@ -51,26 +127,22 @@ class TicTacToe {
     }
 
     resetBoard() {
-        this.board = ["", "", "", "", "", "", "", "", ""];
+        this.board = Array(BOARD_SIZE).fill("");
         this.winningCombination = "";
         this.currentPlayer = "1";
         this.playerIcon = "X";
         this.gameOver = false;
         this.history = [];
         this.currentIndex = history.length;
-        for(let cell of cells) {
-            cell.innerHTML="";
-            cell.classList.remove("selected");
-            cell.classList.remove("won");
-        }
-        this.updateCurrentPlayerInUI();
+        this.ui.updateUIToResetBoard();
+        this.ui.updateCurrentPlayerInUI(this.currentPlayer);
     }
 
     previousState() {
         if(this.currentIndex > 0 && this.currentIndex <= this.history.length) {
             this.currentIndex = this.currentIndex - 1;
             this.board = this.history[this.currentIndex];
-            this.updateGrid();
+            this.ui.updateUIToDisplaySelectedGrid(this.board);
         }
     }
 
@@ -78,31 +150,7 @@ class TicTacToe {
         if(this.currentIndex >= 0 && this.currentIndex < this.history.length - 1) {
             this.currentIndex = this.currentIndex + 1;
             this.board = this.history[this.currentIndex];
-            this.updateGrid();
-        }
-    }
-
-    updateGrid() {
-        for(let i = 0; i<this.cells.length; i++) {
-            this.cells[i].innerHTML = this.board[i];
-        }
-    }
-
-    updateCurrentPlayerInUI() {
-        document.getElementById("current-player").innerHTML="Current Player: " + this.currentPlayer;
-    }
-
-    displayReviewButtonsInUI() {
-        document.getElementById("next-button").hidden = false;
-        document.getElementById("previous-button").hidden = false;
-    }
-
-    updateUIIfCellIsEmpty() {
-        for(let cell of cells) {
-            if(cell.innerHTML==="") {
-                cell.classList.remove("selected");
-                cell.classList.remove("won");
-            }
+            this.ui.updateUIToDisplaySelectedGrid(this.board);
         }
     }
 }
