@@ -18,24 +18,34 @@
         <p id="current-player">Current Player: 1</p>
         <table id="game-board">
             <tr>
-              <td id="0" onclick="playTurn(id)"></td>
-              <td id="1" onclick="playTurn(id)"></td>
-              <td id="2" onclick="playTurn(id)"></td>
+              <td id="0"></td>
+              <td id="1"></td>
+              <td id="2"></td>
             </tr>
             <tr>
-              <td id="3" onclick="playTurn(id)"></td>
-              <td id="4" onclick="playTurn(id)"></td>
-              <td id="5" onclick="playTurn(id)"></td>
+              <td id="3"></td>
+              <td id="4"></td>
+              <td id="5"></td>
             </tr>
             <tr>
-              <td id="6" onclick="playTurn(id)"></td>
-              <td id="7" onclick="playTurn(id)"></td>
-              <td id="8" onclick="playTurn(id)"></td>
+              <td id="6"></td>
+              <td id="7"></td>
+              <td id="8"></td>
             </tr>
         </table>
     </div>
     <div class="reset">
         <button type="button" onclick="resetBoard()">Reset Game!</button>
     </div>
+    <script>
+      const game = new TicTacToe();
+      const cells = document.getElementsByTagName("td");
+
+      for(let i = 0; i < cells.length; i++) {
+          cells[i].addEventListener("click", function() {
+              game.playTurn(i);
+          });
+      }
+  </script>
 </body>
 </html>
